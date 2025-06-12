@@ -28,7 +28,7 @@
   const loadEvents = (attributes) => {
     const newsletterListWrappers = document.querySelectorAll('[data-get-mc-newsletter-list]')
     newsletterListWrappers.forEach((wrapper) => {
-      fetch(`/church/wp-json/mailchimp/newsletter-render`)
+      fetch(`${window.wpApiSettings.root}mailchimp/newsletter-render`)
         .then((blob) => blob.text())
         .then((data) => {
           wrapper.innerHTML = data
