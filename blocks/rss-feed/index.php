@@ -15,7 +15,7 @@ add_action('rest_api_init', function () {
 add_action('init', function () {
 	wp_enqueue_script(
 		'mailchimp-newsletter-block-script',
-		plugin_dir_url( __DIR__ ) . 'block/script.js',
+		plugin_dir_url( __DIR__ ) . 'rss-feed/script.js',
 		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components'),
 		null,
 		true
@@ -30,5 +30,5 @@ add_action('init', function () {
 
 
 function mailchimp_render_newsletter_list ($attributes, $content) {
-	require_once(plugin_dir_path( __DIR__ ) . 'templates/archive-news-campaigns.php');
+	require_once(plugin_dir_path( __DIR__ ) . '../templates/archive-news-campaigns.php');
 }
