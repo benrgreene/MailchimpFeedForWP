@@ -31,5 +31,7 @@ add_action('init', function () {
 });
 
 function mailchimp_render_contact_form ($attributes, $content) {
+	ob_start();
 	require_once(plugin_dir_path( __DIR__ ) . '../templates/contact-form.php');
+	return ob_get_clean();
 }

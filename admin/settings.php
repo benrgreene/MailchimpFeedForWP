@@ -3,6 +3,7 @@
 add_action('admin_init', function () {
 	// Base URL for the campaign feed
 	register_setting('mailchimp-rss-feed-settings', 'mailchimp_rss_feed_base_campaign_url');
+	register_setting('mailchimp-rss-feed-settings', 'mailchimp_campaign_js_sync');	
 
 	// Contact form inbox email address
 	register_setting('mailchimp-rss-feed-settings', 'mailchimp_contact_form_email_address');

@@ -17,6 +17,14 @@
 				</tr>
 				<tr>
 					<th scope="row">
+						<label for="mailchimp_campaign_js_sync">Sync Content</label>
+					</th>
+					<td>
+						<input type="text" id="mailchimp_campaign_js_sync" name="mailchimp_campaign_js_sync" class="regular-text ltr" value="<?= get_option('mailchimp_campaign_js_sync') ?>" />
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
 						<label for="mailchimp_contact_form_email_address">Contact Inbox Address</label>
 					</th>
 					<td>
@@ -52,4 +60,47 @@
 
 		<?php submit_button(); ?>
 	</form>
+
+	<div style="display: none;" id="newsletter-campaign-list">
+		<script language="javascript" type="text/javascript" src="<?= get_option('mailchimp_campaign_js_sync') ?>"></script>
+	</div>
+
+	<form onsubmit="saveAllCampaigns(event)">
+		<p>
+			Sync only needs to be run once to sync all older newsletters.
+		</p>
+		<?php submit_button('Sync Old Newsletters'); ?>
+	</form>
 </div>
+
+<script type="text/javascript">
+	function saveAllCampaigns (event) {
+		event.preventDefault()
+		const campaignList = document.querySelectorAll('#newsletter-campaign-list .campaign')
+		campaignList.forEach((campaign) => {
+			const linkEl = campaign.querySelector('a')
+			sendUpdateForCampaign({
+				date: campaign.innerText.split(' - ')[0].trim(),
+				link: linkEl.getAttribute('href'),
+				title: linkEl.getAttribute('title')
+			})
+		})
+	}
+
+	const sendUpdateForCampaign = ({ date, title, link }) => {
+		fetch(`${window.wpApiSettings.root}brg-mailchimp/save-historic-campaign`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'X-WP-Nonce': '<?= wp_create_nonce('wp_rest') ?>'
+			},
+			body: JSON.stringify({
+				date, title, link
+			})
+		})
+	      .then((blob) => blob.json())
+	      .then((data) => {
+	        console.log(data)
+	      })
+	}
+</script>

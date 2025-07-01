@@ -3,7 +3,7 @@
 add_action('rest_api_init', function () {
 	register_rest_route('mailchimp', 'newsletter-render', array(
 		'methods' => 'GET',
-		'callback' => function ($data) {		
+		'callback' => function ($data) {
 			echo mailchimp_render_newsletter_list(array(), false);
 			exit();
 		},
@@ -30,5 +30,7 @@ add_action('init', function () {
 
 
 function mailchimp_render_newsletter_list ($attributes, $content) {
+	ob_start();
 	require_once(plugin_dir_path( __DIR__ ) . '../templates/archive-news-campaigns.php');
+	return ob_get_clean();
 }
